@@ -1,1 +1,12 @@
-Read me 
+# 2025 Photobook Infrastructure Overview
+
+This repository documents the operational checklist for launching and maintaining the 2025 Photobook web presence.
+
+## Key Documentation
+- [`docs/operations/web_infrastructure_plan.md`](docs/operations/web_infrastructure_plan.md): Domain registration, hosting pipeline configuration, HTTPS/CDN setup, and ongoing maintenance routines.
+
+## Routine Tasks Summary
+- **Monthly:** Refresh featured content, verify automated backups, and run link-check reports.
+- **Annually:** Review hosting/CDN costs and confirm domain renewal and billing details.
+
+Refer to the detailed plan for step-by-step guidance and escalation procedures.
