@@ -1,0 +1,92 @@
+{
+  "participants": [
+    {
+      "id": "amira-chen",
+      "name": "Amira Chen",
+      "role": "Curator",
+      "bio": "Curates the yearly photobook with a focus on sustainability narratives.",
+      "links": [
+        {
+          "type": "website",
+          "label": "Portfolio",
+          "url": "https://amirachen.example.com"
+        }
+      ],
+      "avatar": "/images/participants/amira-chen.jpg"
+    },
+    {
+      "id": "leo-martinez",
+      "name": "Leo Martinez",
+      "role": "Photographer",
+      "bio": "Documentary photographer focused on community events.",
+      "links": [
+        {
+          "type": "instagram",
+          "url": "https://instagram.com/leomartinez"
+        }
+      ],
+      "avatar": "/images/participants/leo-martinez.jpg"
+    }
+  ],
+  "media": [
+    {
+      "id": "harbor-light",
+      "type": "image",
+      "src": "/images/gallery/harbor-light.jpg",
+      "alt": "Blue hour photo of the harbor with festival lights",
+      "title": "Harbor Light",
+      "description": "Captured during the opening night cruise.",
+      "capturedAt": "2024-09-12T19:45:00Z",
+      "credit": "Leo Martinez",
+      "participants": ["leo-martinez"],
+      "eventId": "opening-night",
+      "tags": ["sunset", "water"]
+    },
+    {
+      "id": "panel-discussion",
+      "type": "video",
+      "src": "https://video.example.com/panel-discussion.mp4",
+      "alt": "Panel discussion video thumbnail",
+      "title": "Sustainability Panel",
+      "description": "Highlights from the panel moderated by Amira.",
+      "capturedAt": "2024-09-13T15:00:00Z",
+      "credit": "Studio Capture",
+      "participants": ["amira-chen"],
+      "eventId": "future-of-cities",
+      "tags": ["panel", "sustainability"]
+    }
+  ],
+  "events": [
+    {
+      "id": "opening-night",
+      "title": "Opening Night Cruise",
+      "summary": "Kick-off celebration on the city harbor featuring live performances.",
+      "startDate": "2024-09-12",
+      "endDate": "2024-09-12",
+      "location": {
+        "venue": "Harborview Pier",
+        "city": "Seaside",
+        "country": "USA"
+      },
+      "heroMediaId": "harbor-light",
+      "media": ["harbor-light"],
+      "participants": ["leo-martinez"],
+      "themes": ["celebration", "community"]
+    },
+    {
+      "id": "future-of-cities",
+      "title": "Future of Cities Panel",
+      "summary": "Experts discuss urban planning and sustainability initiatives.",
+      "startDate": "2024-09-13",
+      "location": {
+        "venue": "Civic Innovation Center",
+        "city": "Seaside",
+        "country": "USA"
+      },
+      "heroMediaId": "panel-discussion",
+      "media": ["panel-discussion"],
+      "participants": ["amira-chen", "leo-martinez"],
+      "themes": ["innovation", "sustainability"]
+    }
+  ]
+}

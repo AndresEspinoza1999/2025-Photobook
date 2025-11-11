@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Photobook Gallery Proof of Concept</title>
+    <link rel="stylesheet" href="gallery.css" />
+  </head>
+  <body>
+    <header class="page-header">
+      <h1>2025 Photobook Gallery – Proof of Concept</h1>
+      <p>Data-driven gallery wiring sample using the shared JSON schema.</p>
+      <div class="controls">
+        <label>
+          Theme Filter
+          <select id="themeFilter">
+            <option value="">All Themes</option>
+          </select>
+        </label>
+        <label>
+          Participant Filter
+          <select id="participantFilter">
+            <option value="">All Participants</option>
+          </select>
+        </label>
+      </div>
+    </header>
+
+    <main>
+      <section id="eventList" class="event-list" aria-live="polite"></section>
+      <section id="mediaModal" class="modal" hidden>
+        <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+          <button class="close" id="closeModal" aria-label="Close">×</button>
+          <div id="modalBody"></div>
+        </div>
+      </section>
+    </main>
+
+    <script type="module" src="gallery.js"></script>
+  </body>
+</html>
