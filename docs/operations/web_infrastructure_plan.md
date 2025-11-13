@@ -1,43 +1,47 @@
 # Web Infrastructure Plan
 
 ## Domain Registration and DNS
-- **Domain choice:** Select a primary domain that reflects the "2025 Photobook" brand.
+- **Domain choice:** The production domain is [`sc9photobook2025.com`](http://sc9photobook2025.com/).
 - **Registrar account:** Use a registrar that supports programmatic DNS management (e.g., Cloudflare, Google Domains, Namecheap).
 - **Registration steps:**
-  1. Verify the domain is available and purchase it for a minimum of one year.
-  2. Enable auto-renewal during checkout.
-  3. Lock the domain to prevent unauthorized transfers.
-- **DNS configuration:**
-  - Delegate name servers to the hosting/CDN provider (e.g., Cloudflare) or configure registrar DNS records directly.
-  - Create the following baseline records:
-    - `A`/`AAAA` records pointing to the production web host or load balancer.
-    - `CNAME` records for `www`, `cdn`, or other subdomains.
-    - `TXT` record for domain verification and email sender policies (SPF, DKIM, DMARC).
-  - Document TTL values and propagation checks.
+  1. Confirm the domain is registered under the team account, with auto-renewal enabled and the domain locked against transfers.
+  2. Ensure WHOIS contact details and payment information stay current so renewals are not blocked.
+- **DNS configuration for GitHub Pages:**
+  - Keep registrar name servers in place; GitHub Pages works with registrar-hosted DNS.
+  - For the apex domain, create four `A` records pointing to GitHub Pages: `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, and `185.199.111.153`.
+  - If `www.sc9photobook2025.com` should redirect to the apex, add a `CNAME` record pointing to `<github-username>.github.io` (replace with the organization/user that owns this repository).
+  - Add a `_github-pages-challenge-<org>` TXT record if GitHub requests verification for the custom domain.
+  - Maintain TXT records for SPF/DKIM/DMARC if email sending is required.
+  - Document TTL values, and validate propagation with `dig` or the registrar's DNS tools.
 
 ## Hosting Pipeline
-- **Repository integration:** Connect the Git repository to the hosting provider (e.g., Netlify, Vercel, AWS Amplify).
+- **Hosting provider:** Serve the site with GitHub Pages so every merge to `main` publishes the latest build.
+- **Repository integration:**
+  - Enable GitHub Pages under **Settings → Pages**, selecting the `main` branch (or a dedicated `pages` branch) and the `/` root.
+  - Commit a `CNAME` file containing `sc9photobook2025.com` at the repository root so GitHub Pages remembers the custom domain.
 - **Deployment strategy:**
-  - Prefer Git-based continuous deployment from the `main` branch.
-  - Configure preview deployments for pull requests when supported.
+  - For static content, let GitHub Pages build directly from the branch.
+  - For generated sites (e.g., static site generators), configure a GitHub Actions workflow that runs the build and publishes the output to the Pages artifact.
+  - Use branch protection on `main` and require pull-request reviews to avoid unvetted deployments.
 - **Build automation:**
-  - Define build commands in provider settings (e.g., `npm install && npm run build`).
-  - Store environment variables and secrets via provider dashboard or secrets manager.
-  - Enable build notifications (email/Slack) for failures.
-- **Rollback plan:** Maintain previous build artifacts or deploy history to enable single-click rollback.
+  - Define the build steps in `.github/workflows/pages.yml` (install dependencies, run tests, build static output, upload artifact).
+  - Store tokens or secrets (if required) in GitHub repository secrets; avoid hard-coding configuration.
+  - Enable workflow-failure notifications (email/Slack) through GitHub notifications or custom webhooks.
+- **Rollback plan:**
+  - Use Git tags or release branches to bookmark stable states.
+  - Re-run the GitHub Pages deploy workflow from an older commit to restore a previous version if necessary.
 
 ## HTTPS and CDN Caching
 - **TLS certificates:**
-  - Use the hosting provider's automatic certificate management (Let's Encrypt or equivalent).
-  - Enforce HTTPS redirects at the CDN/edge.
-- **HSTS:** Enable HTTP Strict Transport Security (HSTS) with a max-age of at least 6 months once HTTPS is confirmed.
-- **CDN caching:**
-  - Configure caching rules for static assets (images, CSS, JS) with long max-age and cache-busting via file hashes.
-  - Set appropriate cache-control headers for HTML (shorter TTL, e.g., 5 minutes) to allow quick content updates.
-  - Enable image optimization or WebP/AVIF variants if available.
+  - After the custom domain is saved in the GitHub Pages settings, request GitHub's automated certificate (Let's Encrypt).
+  - Monitor the certificate provisioning status and keep "Enforce HTTPS" enabled once available so visitors are redirected to `https://sc9photobook2025.com/`.
+- **HSTS:** Once HTTPS is reliably enforced, add an HSTS header via a `_headers` file (for static-site generators) or by proxying through a CDN such as Cloudflare.
+- **Caching:**
+  - GitHub Pages serves content through its global CDN; ensure static assets are versioned with cache-busting file names.
+  - If additional control is needed, front the site with Cloudflare or Fastly to manage custom cache rules and edge redirects.
 - **Monitoring:**
-  - Set up uptime monitoring and TLS expiration alerts through the provider or third-party services.
-  - After DNS propagation completes, verify that [http://sc9photobook2025.com/](http://sc9photobook2025.com/) loads the latest build and note the expected HTTPS redirect once TLS is active.
+  - Set up uptime monitoring and TLS expiration alerts (e.g., GitHub status page, StatusCake, UptimeRobot).
+  - After DNS propagation completes, verify that [http://sc9photobook2025.com/](http://sc9photobook2025.com/) and `https://` resolve to the GitHub Pages site without warnings.
 
 ## Routine Operations
 - **Monthly content refresh:**

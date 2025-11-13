@@ -7,7 +7,11 @@ This repository documents the operational checklist for launching and maintainin
 
 ## Live Site
 - Production URL: [http://sc9photobook2025.com/](http://sc9photobook2025.com/)
-- Once HTTPS is enabled, update DNS and hosting to redirect to the secure `https://` version.
+- Hosting: GitHub Pages with the custom domain set in the repository's **Settings → Pages** configuration.
+- Action items:
+  - Commit a `CNAME` file containing `sc9photobook2025.com` so GitHub Pages remembers the domain.
+  - Point registrar DNS `A` records to the GitHub Pages IPs (`185.199.108.153` – `185.199.111.153`).
+  - After DNS propagates, enable "Enforce HTTPS" in GitHub Pages settings to redirect to `https://sc9photobook2025.com/`.
 
 ## Routine Tasks Summary
 - **Monthly:** Refresh featured content, verify automated backups, and run link-check reports.
