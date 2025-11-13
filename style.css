@@ -1,0 +1,107 @@
+:root {
+  color-scheme: dark;
+  --page-bg: #0f172a;
+  --card-bg: rgba(15, 23, 42, 0.8);
+  --text-primary: #f8fafc;
+  --text-muted: rgba(248, 250, 252, 0.72);
+  --shadow: 0 24px 48px rgba(15, 23, 42, 0.48);
+  --radius-lg: 24px;
+  --transition-base: 180ms ease;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background-color: var(--page-bg);
+  color: var(--text-primary);
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  opacity: 0;
+  transition: opacity 600ms var(--transition-base);
+}
+
+body.is-loaded {
+  opacity: 1;
+}
+
+.page {
+  width: min(92vw, 540px);
+  padding: clamp(1.5rem, 2vw + 1rem, 3rem);
+}
+
+.card {
+  background: linear-gradient(160deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95));
+  padding: clamp(2rem, 4vw, 3.5rem);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  text-align: center;
+  border: 1px solid rgba(148, 163, 184, 0.12);
+  backdrop-filter: blur(16px);
+}
+
+.card__header h1 {
+  margin: 0;
+  font-size: clamp(2.25rem, 5vw, 3rem);
+  letter-spacing: -0.02em;
+}
+
+.card__subtitle {
+  margin: 0.75rem 0 0;
+  color: var(--text-muted);
+  font-size: clamp(1.05rem, 3vw, 1.25rem);
+  line-height: 1.6;
+}
+
+.card__cta {
+  align-self: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.9rem 2.4rem;
+  border-radius: 999px;
+  border: 1px solid rgba(248, 250, 252, 0.35);
+  color: var(--text-primary);
+  text-decoration: none;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
+  background-color: rgba(248, 250, 252, 0.08);
+}
+
+.card__cta:hover,
+.card__cta:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 28px rgba(15, 23, 42, 0.45);
+  background-color: rgba(248, 250, 252, 0.15);
+}
+
+.card__cta:focus-visible {
+  outline: 2px solid rgba(248, 250, 252, 0.4);
+  outline-offset: 4px;
+}
+
+@media (max-width: 480px) {
+  .card {
+    gap: 1.5rem;
+  }
+
+  .card__cta {
+    width: 100%;
+  }
+}
