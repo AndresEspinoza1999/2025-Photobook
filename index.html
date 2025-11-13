@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SC9 Photobook 2025</title>
+    <meta
+      name="description"
+      content="Explore the SC9 Photobook 2025 collection featuring student-curated stories, imagery, and highlights."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-content">
+        <div class="branding">
+          <span class="year">2025</span>
+          <h1>SC9 Photobook</h1>
+        </div>
+        <nav class="site-nav" aria-label="Primary">
+          <a href="#collections">Collections</a>
+          <a href="#highlights">Highlights</a>
+          <a href="#behind-the-scenes">Behind the Scenes</a>
+          <a href="#newsletter">Stay in Touch</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="container hero-content">
+          <div class="hero-copy">
+            <p class="eyebrow">New Release</p>
+            <h2>Capturing the Stories of SC9</h2>
+            <p>
+              Dive into a curated collection of photographs and narratives from the
+              Class of 2025. Each spread blends candid moments, signature events,
+              and the creative spirit that defined the year.
+            </p>
+            <div class="hero-actions">
+              <a class="btn primary" href="#collections">Browse Collections</a>
+              <a class="btn ghost" href="#newsletter">Download Preview PDF</a>
+            </div>
+          </div>
+          <figure class="hero-art" aria-hidden="true">
+            <img
+              src="https://images.unsplash.com/photo-1526401485004-46910ecc8e51?auto=format&fit=crop&w=900&q=80"
+              alt="Student photographers reviewing shots on a camera"
+            />
+            <figcaption>Shot on location during the spring showcase.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section id="collections" class="section collections">
+        <div class="container">
+          <header class="section-header">
+            <h2>Featured Collections</h2>
+            <p>
+              Each collection focuses on a signature aspect of the SC9 experience,
+              blending imagery with first-person reflections.
+            </p>
+          </header>
+          <div class="grid">
+            <article class="card">
+              <img
+                src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=800&q=80"
+                alt="Students collaborating on a project"
+              />
+              <div class="card-body">
+                <h3>Innovation Studios</h3>
+                <p>
+                  Documenting collaborative breakthroughs—from robotics labs to
+                  design sprints—and the students who led them.
+                </p>
+              </div>
+            </article>
+            <article class="card">
+              <img
+                src="https://images.unsplash.com/photo-1529158062015-cad636e69505?auto=format&fit=crop&w=800&q=80"
+                alt="Friends celebrating outdoors"
+              />
+              <div class="card-body">
+                <h3>Moments in Motion</h3>
+                <p>
+                  A dynamic look at festivals, performances, and sports events that
+                  kept our campus energy high all year long.
+                </p>
+              </div>
+            </article>
+            <article class="card">
+              <img
+                src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=800&q=80"
+                alt="A quiet study session"
+              />
+              <div class="card-body">
+                <h3>Quiet Corners</h3>
+                <p>
+                  Intimate portraits and journal entries from spaces where students
+                  reflected, planned, and recharged.
+                </p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="highlights" class="section highlights">
+        <div class="container">
+          <header class="section-header">
+            <h2>Monthly Highlights</h2>
+            <p>
+              Follow the project timeline and the editorial choices shaping the
+              2025 photobook release.
+            </p>
+          </header>
+          <ul class="timeline" id="timeline">
+            <!-- Populated by main.js -->
+          </ul>
+        </div>
+      </section>
+
+      <section id="behind-the-scenes" class="section bts">
+        <div class="container bts-content">
+          <div class="bts-copy">
+            <h2>Behind the Scenes</h2>
+            <p>
+              Meet the student-led editorial board, explore our production
+              workflow, and see how each story moves from idea to final layout.
+            </p>
+            <ul class="bts-list">
+              <li>Weekly curation sessions with the photography cohort.</li>
+              <li>Color grading and retouching guided by our alumni mentors.</li>
+              <li>Storyboarding workshops to pair written narratives with visuals.</li>
+            </ul>
+            <a class="btn primary" href="docs/operations/web_infrastructure_plan.md"
+              >View Production Notes</a
+            >
+          </div>
+          <figure class="bts-art" aria-hidden="true">
+            <img
+              src="https://images.unsplash.com/photo-1516387938699-a93567ec168e?auto=format&fit=crop&w=900&q=80"
+              alt="Designers reviewing a layout on a light table"
+            />
+          </figure>
+        </div>
+      </section>
+
+      <section id="newsletter" class="section newsletter">
+        <div class="container newsletter-content">
+          <div>
+            <h2>Be the First to Know</h2>
+            <p>
+              Subscribe for release announcements, print pre-order windows, and
+              invitations to the gallery launch event.
+            </p>
+          </div>
+          <form class="newsletter-form" name="newsletter" data-netlify="true">
+            <label class="visually-hidden" for="email">Email address</label>
+            <input
+              id="email"
+              type="email"
+              name="email"
+              placeholder="you@example.com"
+              required
+              autocomplete="email"
+            />
+            <button type="submit" class="btn primary">Notify Me</button>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-content">
+        <p>&copy; 2025 SC9 Photobook Collective. All rights reserved.</p>
+        <div class="footer-links">
+          <a href="mailto:hello@sc9photobook2025.com">Email</a>
+          <a href="https://instagram.com" rel="noopener">Instagram</a>
+          <a href="docs/operations/web_infrastructure_plan.md">Operations</a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="assets/js/main.js" defer></script>
+  </body>
+</html>
