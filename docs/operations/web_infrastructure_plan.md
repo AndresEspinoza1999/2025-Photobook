@@ -37,6 +37,7 @@
   - Enable image optimization or WebP/AVIF variants if available.
 - **Monitoring:**
   - Set up uptime monitoring and TLS expiration alerts through the provider or third-party services.
+  - After DNS propagation completes, verify that [http://sc9photobook2025.com/](http://sc9photobook2025.com/) loads the latest build and note the expected HTTPS redirect once TLS is active.
 
 ## Routine Operations
 - **Monthly content refresh:**
