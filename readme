@@ -5,30 +5,30 @@ This repository hosts the static site that GitHub Pages publishes to
 operational checklist for maintaining the live experience.
 
 ## Site Structure
-- [`index.html`](index.html): Interactive photobook skeleton with page-turn navigation and placeholder spreads.
-- [`assets/css/styles.css`](assets/css/styles.css): Global styling for the site shell and the 3D book effect.
-- [`assets/js/main.js`](assets/js/main.js): Controls page flips, keyboard navigation, and status messaging.
+- [`index.html`](index.html): Minimal landing card that introduces the SC9 Photo Book 2025 experience.
+- [`style.css`](style.css): Dark theme styling, layout rules, and responsive behaviour for the landing card.
+- [`script.js`](script.js): Handles the page fade-in animation and logs the load event.
 - [`CNAME`](CNAME): Custom-domain binding for GitHub Pages.
 - [`docs/operations/web_infrastructure_plan.md`](docs/operations/web_infrastructure_plan.md): Domain registration, hosting pipeline configuration, HTTPS/CDN setup, and ongoing maintenance routines.
 
 ## How to Preview Locally
 1. Install any static HTTP server (Python is preinstalled in most environments).
 2. From the repository root, run `python -m http.server 4000`.
-3. Open [http://localhost:4000](http://localhost:4000) in a browser to review the page-turn animation before deploying.
+3. Open [http://localhost:4000](http://localhost:4000) in a browser to verify the landing card renders correctly before deploying.
 
-## Editing the Photobook Skeleton
-- Duplicate an existing `<div class="page">` block in `index.html` to add new spreads, updating the `data-summary` attribute and placeholder text.
-- Adjust colors, textures, or layout guides in `assets/css/styles.css` to match the evolving art direction.
-- Use `assets/js/main.js` if you need to customise navigation behaviour (e.g., locking certain spreads during reviews).
+## Editing the Landing Page
+- Update the headline or tagline in `index.html` to reflect the latest story for the photobook.
+- Tweak colours, spacing, or hover treatments in `style.css` to match evolving art direction.
+- Extend `script.js` if you need additional lightweight interactions on the landing card.
 
 ## GitHub Pages Deployment Checklist
-- Push changes to the default branch so GitHub Pages rebuilds automatically.
-- Confirm **Settings → Pages** is set to deploy from the root of the repository.
+- Push changes to the `main` branch so GitHub Pages rebuilds automatically from the repository root.
+- Confirm **Settings → Pages** is set to deploy from the `main` branch and the `/` directory.
 - Verify the custom domain reads `sc9photobook2025.com` and HTTPS is enforced.
 - Ensure registrar DNS `A` records point to the four GitHub Pages IP addresses (`185.199.108.153` – `185.199.111.153`).
 
 ## Routine Tasks Summary
-- **Monthly:** Refresh spreads with new photography, verify automated backups, and run link-check reports.
+- **Monthly:** Refresh copy or imagery references, verify automated backups, and run link-check reports.
 - **Annually:** Review hosting/CDN costs and confirm domain renewal and billing details.
 
 Refer to the detailed plan for step-by-step guidance and escalation procedures.

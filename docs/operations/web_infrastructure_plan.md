@@ -21,7 +21,7 @@
   - Commit a `CNAME` file containing `sc9photobook2025.com` at the repository root so GitHub Pages remembers the custom domain.
 - **Deployment strategy:**
   - For static content, let GitHub Pages build directly from the branch.
-    - The repository root contains `index.html` plus the `assets/` directory for styles and scripts, so no build step is required.
+    - The repository root contains `index.html`, `style.css`, and `script.js`, so no build step is required.
   - For generated sites (e.g., static site generators), configure a GitHub Actions workflow that runs the build and publishes the output to the Pages artifact.
   - Use branch protection on `main` and require pull-request reviews to avoid unvetted deployments.
 - **Build automation:**
