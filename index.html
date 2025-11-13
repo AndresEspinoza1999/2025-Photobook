@@ -6,7 +6,7 @@
     <title>SC9 Photobook 2025</title>
     <meta
       name="description"
-      content="Explore the SC9 Photobook 2025 collection featuring student-curated stories, imagery, and highlights."
+      content="Interactive skeleton of the SC9 Photobook 2025 with page-turn navigation."
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -20,159 +20,216 @@
     <header class="site-header">
       <div class="container header-content">
         <div class="branding">
-          <span class="year">2025</span>
-          <h1>SC9 Photobook</h1>
+          <span class="year">SC9</span>
+          <h1>Photobook 2025</h1>
         </div>
-        <nav class="site-nav" aria-label="Primary">
-          <a href="#collections">Collections</a>
-          <a href="#highlights">Highlights</a>
-          <a href="#behind-the-scenes">Behind the Scenes</a>
-          <a href="#newsletter">Stay in Touch</a>
-        </nav>
+        <div class="domain-status">
+          <span class="label">Live preview domain</span>
+          <a href="http://sc9photobook2025.com/" rel="noopener">sc9photobook2025.com</a>
+        </div>
       </div>
     </header>
 
     <main>
-      <section class="hero">
-        <div class="container hero-content">
-          <div class="hero-copy">
-            <p class="eyebrow">New Release</p>
-            <h2>Capturing the Stories of SC9</h2>
+      <section class="intro">
+        <div class="container intro-content">
+          <div class="intro-copy">
+            <p class="eyebrow">Interactive preview</p>
+            <h2>Flip through the photobook layout skeleton</h2>
             <p>
-              Dive into a curated collection of photographs and narratives from the
-              Class of 2025. Each spread blends candid moments, signature events,
-              and the creative spirit that defined the year.
+              Use the controls below to turn pages just like a physical book. Each
+              spread highlights the content areas we still need to populate with
+              final photography, captions, and narratives.
             </p>
-            <div class="hero-actions">
-              <a class="btn primary" href="#collections">Browse Collections</a>
-              <a class="btn ghost" href="#newsletter">Download Preview PDF</a>
-            </div>
           </div>
-          <figure class="hero-art" aria-hidden="true">
-            <img
-              src="https://images.unsplash.com/photo-1526401485004-46910ecc8e51?auto=format&fit=crop&w=900&q=80"
-              alt="Student photographers reviewing shots on a camera"
-            />
-            <figcaption>Shot on location during the spring showcase.</figcaption>
-          </figure>
-        </div>
-      </section>
-
-      <section id="collections" class="section collections">
-        <div class="container">
-          <header class="section-header">
-            <h2>Featured Collections</h2>
-            <p>
-              Each collection focuses on a signature aspect of the SC9 experience,
-              blending imagery with first-person reflections.
-            </p>
-          </header>
-          <div class="grid">
-            <article class="card">
-              <img
-                src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=800&q=80"
-                alt="Students collaborating on a project"
-              />
-              <div class="card-body">
-                <h3>Innovation Studios</h3>
-                <p>
-                  Documenting collaborative breakthroughs—from robotics labs to
-                  design sprints—and the students who led them.
-                </p>
-              </div>
-            </article>
-            <article class="card">
-              <img
-                src="https://images.unsplash.com/photo-1529158062015-cad636e69505?auto=format&fit=crop&w=800&q=80"
-                alt="Friends celebrating outdoors"
-              />
-              <div class="card-body">
-                <h3>Moments in Motion</h3>
-                <p>
-                  A dynamic look at festivals, performances, and sports events that
-                  kept our campus energy high all year long.
-                </p>
-              </div>
-            </article>
-            <article class="card">
-              <img
-                src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=800&q=80"
-                alt="A quiet study session"
-              />
-              <div class="card-body">
-                <h3>Quiet Corners</h3>
-                <p>
-                  Intimate portraits and journal entries from spaces where students
-                  reflected, planned, and recharged.
-                </p>
-              </div>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section id="highlights" class="section highlights">
-        <div class="container">
-          <header class="section-header">
-            <h2>Monthly Highlights</h2>
-            <p>
-              Follow the project timeline and the editorial choices shaping the
-              2025 photobook release.
-            </p>
-          </header>
-          <ul class="timeline" id="timeline">
-            <!-- Populated by main.js -->
+          <ul class="intro-list">
+            <li>Dedicated spreads for cover art, table of contents, and dedication.</li>
+            <li>Blueprint sections for feature chapters, student voices, and timelines.</li>
+            <li>Closing spreads for acknowledgements, sponsors, and back cover treatments.</li>
           </ul>
         </div>
       </section>
 
-      <section id="behind-the-scenes" class="section bts">
-        <div class="container bts-content">
-          <div class="bts-copy">
-            <h2>Behind the Scenes</h2>
-            <p>
-              Meet the student-led editorial board, explore our production
-              workflow, and see how each story moves from idea to final layout.
-            </p>
-            <ul class="bts-list">
-              <li>Weekly curation sessions with the photography cohort.</li>
-              <li>Color grading and retouching guided by our alumni mentors.</li>
-              <li>Storyboarding workshops to pair written narratives with visuals.</li>
-            </ul>
-            <a class="btn primary" href="docs/operations/web_infrastructure_plan.md"
-              >View Production Notes</a
-            >
+      <section class="book-section" aria-label="Photobook skeleton">
+        <div class="container">
+          <div class="controls">
+            <button id="prevPage" class="btn ghost" type="button">Previous spread</button>
+            <div class="page-indicator" aria-live="polite">
+              <span id="pageStatus">Cover • Ready to open</span>
+            </div>
+            <button id="nextPage" class="btn primary" type="button">Next spread</button>
           </div>
-          <figure class="bts-art" aria-hidden="true">
-            <img
-              src="https://images.unsplash.com/photo-1516387938699-a93567ec168e?auto=format&fit=crop&w=900&q=80"
-              alt="Designers reviewing a layout on a light table"
-            />
-          </figure>
+
+          <div class="book-wrapper">
+            <div class="book" id="book">
+              <div class="page" data-summary="Spread 1 • Inside cover &amp; contents overview">
+                <div class="page-surface page-front">
+                  <div class="page-inner">
+                    <p class="page-label">Front Cover</p>
+                    <h3>SC9 Photobook 2025</h3>
+                    <p class="placeholder">
+                      Hero imagery, title treatment, embossing, and finishing notes go here.
+                    </p>
+                  </div>
+                </div>
+                <div class="page-surface page-back">
+                  <div class="page-inner">
+                    <p class="page-label">Inside Cover</p>
+                    <p class="placeholder">
+                      Reserve space for a short mission statement, motif pattern, or signature texture.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="page" data-summary="Spread 2 • Table of contents &amp; year at a glance">
+                <div class="page-surface page-front">
+                  <div class="page-inner">
+                    <p class="page-label">Table of Contents</p>
+                    <ul class="placeholder-list">
+                      <li>Foreword .................................... 04</li>
+                      <li>Innovation Studios .......................... 12</li>
+                      <li>Moments in Motion ........................... 34</li>
+                      <li>Quiet Corners ............................... 58</li>
+                      <li>Behind the Scenes ........................... 80</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="page-surface page-back">
+                  <div class="page-inner">
+                    <p class="page-label">Year at a Glance</p>
+                    <p class="placeholder">
+                      Placeholder timeline grid for academic milestones, marquee events, and editorial deadlines.
+                    </p>
+                    <div class="timeline-block">
+                      <span>Sept</span>
+                      <span>Fall immersion shoots</span>
+                      <span>Jan</span>
+                      <span>Post-production sprints</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="page" data-summary="Spread 3 • Dedication &amp; editorial foreword">
+                <div class="page-surface page-front">
+                  <div class="page-inner">
+                    <p class="page-label">Dedication</p>
+                    <p class="placeholder">
+                      Reserved for a heartfelt note to the SC9 community, featuring signatures or a collage vignette.
+                    </p>
+                  </div>
+                </div>
+                <div class="page-surface page-back">
+                  <div class="page-inner">
+                    <p class="page-label">Editorial Foreword</p>
+                    <p class="placeholder">
+                      Outline the themes of the 2025 photobook, introduce the editorial board, and set expectations for the journey ahead.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="page" data-summary="Spread 4 • Chapter blueprints &amp; moodboards">
+                <div class="page-surface page-front">
+                  <div class="page-inner">
+                    <p class="page-label">Chapter One Blueprint</p>
+                    <p class="placeholder">
+                      Layout zones for hero image, supporting gallery strip, and pull quote callouts.
+                    </p>
+                    <div class="layout-grid">
+                      <span class="block block-large">Feature image</span>
+                      <span class="block block-small">Story beat</span>
+                      <span class="block block-small">Story beat</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="page-surface page-back">
+                  <div class="page-inner">
+                    <p class="page-label">Moodboard Notes</p>
+                    <p class="placeholder">
+                      Capture palette swatches, typography reminders, and direction for candid vs. posed imagery.
+                    </p>
+                    <ul class="placeholder-list">
+                      <li>Palette: Deep teal, warm sandstone, polished copper</li>
+                      <li>Textures: Recycled fiber paper, clean sans-serif captions</li>
+                      <li>Angles: Over-the-shoulder, process close-ups, environmental portraits</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <div class="page" data-summary="Spread 5 • Student voices &amp; feature interviews">
+                <div class="page-surface page-front">
+                  <div class="page-inner">
+                    <p class="page-label">Student Voices</p>
+                    <p class="placeholder">
+                      Placeholder columns for three spotlight interviews with supporting headshots.
+                    </p>
+                    <div class="quote-grid">
+                      <blockquote>
+                        &ldquo;Capturing the build nights showed how collaboration fuels every breakthrough.&rdquo;
+                      </blockquote>
+                      <blockquote>
+                        &ldquo;The photo walks became our storytelling labs—learning to see the campus with fresh eyes.&rdquo;
+                      </blockquote>
+                    </div>
+                  </div>
+                </div>
+                <div class="page-surface page-back">
+                  <div class="page-inner">
+                    <p class="page-label">Feature Interview</p>
+                    <p class="placeholder">
+                      Allocate space for a long-form Q&amp;A, infographic callouts, and margin annotations.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="page" data-summary="Spread 6 • Credits, sponsors &amp; back cover">
+                <div class="page-surface page-front">
+                  <div class="page-inner">
+                    <p class="page-label">Credits &amp; Sponsors</p>
+                    <ul class="placeholder-list">
+                      <li>Editorial Board .................................... TBD</li>
+                      <li>Photography Team .................................. TBD</li>
+                      <li>Production Partners ............................... TBD</li>
+                      <li>Printing &amp; Finishing .............................. TBD</li>
+                    </ul>
+                    <p class="placeholder">Add sponsor logos, acknowledgements, and barcode placement notes.</p>
+                  </div>
+                </div>
+                <div class="page-surface page-back">
+                  <div class="page-inner">
+                    <p class="page-label">Back Cover</p>
+                    <p class="placeholder">
+                      Reserve space for teaser copy, ISBN block, and final textures to close the experience.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <p class="helper-text">
+            Tip: Use the arrow keys on your keyboard to turn pages. Add new spreads by duplicating a
+            <code>.page</code> element and updating the placeholder text.
+          </p>
         </div>
       </section>
 
-      <section id="newsletter" class="section newsletter">
-        <div class="container newsletter-content">
-          <div>
-            <h2>Be the First to Know</h2>
-            <p>
-              Subscribe for release announcements, print pre-order windows, and
-              invitations to the gallery launch event.
-            </p>
-          </div>
-          <form class="newsletter-form" name="newsletter" data-netlify="true">
-            <label class="visually-hidden" for="email">Email address</label>
-            <input
-              id="email"
-              type="email"
-              name="email"
-              placeholder="you@example.com"
-              required
-              autocomplete="email"
-            />
-            <button type="submit" class="btn primary">Notify Me</button>
-          </form>
+      <section class="notes">
+        <div class="container notes-content">
+          <h2>What&rsquo;s left to gather?</h2>
+          <ul>
+            <li>High-resolution imagery for each featured chapter and interview portrait.</li>
+            <li>Final copy for dedications, editorial letters, and student testimonials.</li>
+            <li>Confirmed sponsor list, production credits, and barcode/ISBN metadata.</li>
+          </ul>
+          <p>
+            Keep this skeleton updated as content is approved so every stakeholder can preview the
+            latest sequence before we lock the print layout.
+          </p>
         </div>
       </section>
     </main>
@@ -182,7 +239,7 @@
         <p>&copy; 2025 SC9 Photobook Collective. All rights reserved.</p>
         <div class="footer-links">
           <a href="mailto:hello@sc9photobook2025.com">Email</a>
-          <a href="https://instagram.com" rel="noopener">Instagram</a>
+          <a href="https://github.com/" rel="noopener">GitHub</a>
           <a href="docs/operations/web_infrastructure_plan.md">Operations</a>
         </div>
       </div>

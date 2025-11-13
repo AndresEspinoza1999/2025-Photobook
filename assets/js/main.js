@@ -1,64 +1,89 @@
-const timeline = document.querySelector("#timeline");
+document.addEventListener("DOMContentLoaded", () => {
+  const book = document.getElementById("book");
+  if (!book) {
+    return;
+  }
 
-const highlights = [
-  {
-    month: "January 2025",
-    title: "Storyboard Sprint",
-    summary:
-      "Editorial team drafts the 2025 theme pillars and assigns photographers to each chapter.",
-  },
-  {
-    month: "March 2025",
-    title: "Studio Portrait Week",
-    summary:
-      "Lighting labs are transformed into portrait studios to capture seniors and faculty mentors.",
-  },
-  {
-    month: "May 2025",
-    title: "Field Documentary Trips",
-    summary:
-      "Outdoor shoots and interviews gather stories from partner organizations across the city.",
-  },
-  {
-    month: "July 2025",
-    title: "Color Grading Marathon",
-    summary:
-      "Volunteers refine tone and contrast to create a cohesive visual language for the book.",
-  },
-  {
-    month: "September 2025",
-    title: "Layout Finalization",
-    summary:
-      "Designers lock in page order, pull quotes, and captions before exporting the print-ready files.",
-  },
-  {
-    month: "November 2025",
-    title: "Launch & Gallery Night",
-    summary:
-      "Pre-orders ship, the digital photobook goes live, and we celebrate with a community gallery event.",
-  },
-];
-
-if (timeline) {
-  const fragment = document.createDocumentFragment();
-
-  highlights.forEach(({ month, title, summary }) => {
-    const item = document.createElement("li");
-    item.className = "timeline-item";
-
-    const time = document.createElement("time");
-    time.textContent = month;
-    time.setAttribute("datetime", month.replace(" ", "-"));
-
-    const heading = document.createElement("h3");
-    heading.textContent = title;
-
-    const paragraph = document.createElement("p");
-    paragraph.textContent = summary;
-
-    item.append(time, heading, paragraph);
-    fragment.appendChild(item);
+  const pages = Array.from(book.querySelectorAll(".page"));
+  const prevButton = document.getElementById("prevPage");
+  const nextButton = document.getElementById("nextPage");
+  const pageStatus = document.getElementById("pageStatus");
+  const progressLabels = pages.map((page, index) => {
+    const summary = page.dataset.summary;
+    return summary || `Spread ${index + 1}`;
   });
 
-  timeline.appendChild(fragment);
-}
+  let currentTurn = 0; // number of pages currently flipped
+
+  const setZIndices = () => {
+    pages.forEach((page, index) => {
+      // Stack pages so the cover sits on top initially
+      page.style.zIndex = pages.length - index;
+    });
+  };
+
+  const updateIndicator = () => {
+    let label;
+    if (currentTurn === 0) {
+      label = "Cover • Ready to open";
+    } else if (currentTurn === pages.length) {
+      label = "Back cover • End of preview";
+    } else {
+      label = progressLabels[currentTurn - 1];
+    }
+
+    if (pageStatus) {
+      pageStatus.textContent = label;
+    }
+
+    if (prevButton) {
+      prevButton.disabled = currentTurn === 0;
+    }
+
+    if (nextButton) {
+      nextButton.disabled = currentTurn === pages.length;
+    }
+  };
+
+  const goToNext = () => {
+    if (currentTurn >= pages.length) {
+      return;
+    }
+    pages[currentTurn].classList.add("flipped");
+    pages[currentTurn].setAttribute("aria-hidden", "true");
+    currentTurn += 1;
+    updateIndicator();
+  };
+
+  const goToPrevious = () => {
+    if (currentTurn <= 0) {
+      return;
+    }
+    currentTurn -= 1;
+    pages[currentTurn].classList.remove("flipped");
+    pages[currentTurn].setAttribute("aria-hidden", "false");
+    updateIndicator();
+  };
+
+  setZIndices();
+  pages.forEach((page) => page.setAttribute("aria-hidden", "false"));
+  updateIndicator();
+
+  if (prevButton) {
+    prevButton.addEventListener("click", goToPrevious);
+  }
+
+  if (nextButton) {
+    nextButton.addEventListener("click", goToNext);
+  }
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "ArrowRight") {
+      event.preventDefault();
+      goToNext();
+    } else if (event.key === "ArrowLeft") {
+      event.preventDefault();
+      goToPrevious();
+    }
+  });
+});
