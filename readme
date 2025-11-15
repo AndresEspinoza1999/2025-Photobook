@@ -12,11 +12,13 @@ operational checklist for maintaining the live experience.
 - [`style.css`](style.css): Global design system, layout primitives, utility classes, and upload form styling.
 - [`script.js`](script.js): Handles the page fade-in animation and logs the load event.
 - [`assets/js/gallery.js`](assets/js/gallery.js): Lazy-loading, lightbox navigation, share controls, and accessibility helpers for the galleries.
-- [`assets/js/upload.js`](assets/js/upload.js): Placeholder script that keeps the upload form disabled until the Firebase workflow ships.
+- [`assets/js/upload.js`](assets/js/upload.js): Front-end uploader scaffolding with validation, previews, and placeholders for the future Firebase endpoints.
 - [`assets/css/gallery.css`](assets/css/gallery.css): Masonry layout rules for the monthly galleries.
 - [`CNAME`](CNAME): Custom-domain binding for GitHub Pages.
 - [`docs/operations/web_infrastructure_plan.md`](docs/operations/web_infrastructure_plan.md): Domain registration, hosting pipeline configuration, HTTPS/CDN setup, and ongoing maintenance routines.
 - [`docs/operations/media_upload_pipeline.md`](docs/operations/media_upload_pipeline.md): Migration plan for the upcoming Firebase-based uploader.
+- [`firebase.json`](firebase.json) & [`firestore.rules`](firestore.rules): Baseline Firebase Hosting and Firestore configuration ready for `firebase init`.
+- [`functions/`](functions/): Placeholder Firebase Functions project with stubbed `generateUploadUrl` and `confirmUpload` handlers.
 
 ## How to Preview Locally
 1. Install any static HTTP server (Python is preinstalled in most environments).
@@ -31,9 +33,9 @@ operational checklist for maintaining the live experience.
 - Populate the monthly galleries (`months/*.html`) with new `<figure>` blocks that point to assets inside `/assets/img/<month>/`.
 
 ## Media Upload Workflow (Quick Reference)
-The previous AWS/S3 uploader has been retired. Until the Firebase Storage + Functions flow ships, contributors should drop files
+The legacy uploader has been retired. Until the Firebase Storage + Functions flow ships, contributors should drop files
 in the shared drive and note the target month so editors can pull them into `/assets/img/<month>/`. Track the migration status in
-[`docs/operations/media_upload_pipeline.md`](docs/operations/media_upload_pipeline.md) and update this section once the new API is ready.
+[`docs/operations/media_upload_pipeline.md`](docs/operations/media_upload_pipeline.md) and update this section once the new API is ready. When Firebase Functions are live, point `upload.html` at the callable endpoints documented there and re-enable the client-side uploader.
 ## GitHub Pages Deployment Checklist
 - Push changes to the `main` branch so GitHub Pages rebuilds automatically from the repository root.
 - Confirm **Settings → Pages** is set to deploy from the `main` branch and the `/` directory.

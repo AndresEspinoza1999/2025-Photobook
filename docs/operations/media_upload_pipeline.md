@@ -1,7 +1,12 @@
 # Media Upload Pipeline (Firebase Migration)
 
-The previous AWS-based uploader has been decommissioned. This document tracks the plan for rebuilding the workflow on Firebase
+The legacy uploader has been decommissioned. This document tracks the plan for rebuilding the workflow on Firebase
 Storage and Cloud Functions so contributors can once again submit photos directly from the browser.
+
+> **Firebase scaffolding in repo**
+> - `firebase.json` and `firestore.rules` now live at the repository root for easy `firebase init` handoff.
+> - `functions/index.js` includes placeholder `generateUploadUrl` and `confirmUpload` exports (both throw `unimplemented`).
+> - `functions/package.json` declares the Firebase Admin SDK dependencies and Node 18 runtime so deployment scripts know what to install.
 
 ## Target Architecture
 

@@ -71,6 +71,6 @@
 - Maintain a changelog of infrastructure updates for auditing purposes.
 
 ## Media Upload Service
-- **Status:** The AWS-based uploader has been retired. We are rebuilding the workflow on Firebase Storage + Cloud Functions to better align with the rest of the stack.
+- **Status:** The legacy uploader has been retired. We are rebuilding the workflow on Firebase Storage + Cloud Functions to better align with the rest of the stack.
 - **Interim process:** Contributors should use the shared drive to hand off files, and editors will continue to curate assets manually until the Firebase endpoint is available.
 - **Migration tracking:** Follow [`media_upload_pipeline.md`](media_upload_pipeline.md) for the Firebase rollout plan, security requirements, and integration checklist. Update this section once the new API is deployed.
