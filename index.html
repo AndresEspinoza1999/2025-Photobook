@@ -13,6 +13,20 @@
         <a class="site-header__link" href="index.html" aria-current="page">Home</a>
         <a class="site-header__link" href="highlights.html">Highlights</a>
       </nav>
+      <nav class="site-header__timeline text-sm text-muted" aria-label="Year navigation">
+        <a href="months/january.html">Jan</a> →
+        <a href="months/february.html">Feb</a> →
+        <a href="months/march.html">Mar</a> →
+        <a href="months/april.html">Apr</a> →
+        <a href="months/may.html">May</a> →
+        <a href="months/june.html">Jun</a> →
+        <a href="months/july.html">Jul</a> →
+        <a href="months/august.html">Aug</a> →
+        <a href="months/september.html">Sep</a> →
+        <a href="months/october.html">Oct</a> →
+        <a href="months/november.html">Nov</a> →
+        <a href="months/december.html">Dec</a>
+      </nav>
     </header>
     <main class="layout" aria-labelledby="site-title">
       <header class="hero">
@@ -21,6 +35,33 @@
         <p class="hero__subtitle">A year of memories with the squad.</p>
         <p class="hero__note text-muted text-sm">Explore monthly galleries, playlists, and highlight reels from our favorite adventures.</p>
       </header>
+      <section class="landing-meta" aria-label="Latest updates and themes">
+        <div class="month-overview__grid">
+          <article class="month-overview__card">
+            <h2 class="text-lg">Latest updates</h2>
+            <p class="text-sm text-muted">Fresh captions and playlists dropped this week:</p>
+            <ul class="month-overview__list text-sm text-muted">
+              <li><a href="months/september.html">September</a> · new rooftop study recap</li>
+              <li><a href="months/november.html">November</a> · gratitude gallery and playlist</li>
+              <li><a href="months/december.html">December</a> · year-end toast spread</li>
+            </ul>
+          </article>
+          <article class="month-overview__card">
+            <h2 class="text-lg">Browse by vibe</h2>
+            <p class="text-sm text-muted">Pick a lane to jump into matching chapters.</p>
+            <div class="filter-chips">
+              <span class="badge badge-pill">Trips</span>
+              <span class="badge badge-pill">Nights Out</span>
+              <span class="badge badge-pill">Chill Days</span>
+              <span class="badge badge-pill">Creative Mode</span>
+            </div>
+          </article>
+          <article class="month-overview__card">
+            <h2 class="text-lg">Highlights on deck</h2>
+            <p class="text-sm text-muted">Short on time? Visit the <a href="highlights.html">Highlights hub</a> for standout trips, playlists, and awards.</p>
+          </article>
+        </div>
+      </section>
       <nav class="month-grid" aria-label="Monthly photo collections">
         <a class="month-card" href="months/january.html">
           <span class="month-card__label">January</span>
@@ -73,7 +114,13 @@
       </nav>
     </main>
     <footer class="site-footer text-muted text-sm">
-      Built by the SC9 squad · Updated as 2025 unfolds
+      <div>Built by the SC9 squad · Updated as 2025 unfolds</div>
+      <div class="text-sm text-muted" aria-label="Timeline">
+        <a href="months/january.html">Jan</a> → <a href="months/february.html">Feb</a> → <a href="months/march.html">Mar</a> →
+        <a href="months/april.html">Apr</a> → <a href="months/may.html">May</a> → <a href="months/june.html">Jun</a> →
+        <a href="months/july.html">Jul</a> → <a href="months/august.html">Aug</a> → <a href="months/september.html">Sep</a> →
+        <a href="months/october.html">Oct</a> → <a href="months/november.html">Nov</a> → <a href="months/december.html">Dec</a>
+      </div>
     </footer>
     <script src="script.js" defer></script>
   </body>

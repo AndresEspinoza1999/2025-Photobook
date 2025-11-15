@@ -76,6 +76,13 @@ function createLightbox(loadImage) {
       <button type="button" class="lightbox__close" aria-label="Close lightbox">&times;</button>
       <img class="lightbox__image" alt="Expanded gallery item" />
       <p class="lightbox__caption"></p>
+      <div class="lightbox__meta">
+        <span class="lightbox__counter" aria-live="polite"></span>
+        <div class="lightbox__actions">
+          <button type="button" class="lightbox__share" data-share="copy" aria-label="Copy photo link">Copy link</button>
+          <button type="button" class="lightbox__share" data-share="share" aria-label="Share this photo">Share</button>
+        </div>
+      </div>
       <button type="button" class="lightbox__nav lightbox__nav--next" aria-label="Next image">&#10095;</button>
     </div>
   `;
@@ -85,12 +92,16 @@ function createLightbox(loadImage) {
   const closeButton = template.querySelector('.lightbox__close');
   const prevButton = template.querySelector('.lightbox__nav--prev');
   const nextButton = template.querySelector('.lightbox__nav--next');
+  const counter = template.querySelector('.lightbox__counter');
+  const shareButtons = Array.from(template.querySelectorAll('.lightbox__share'));
 
   let activeItems = [];
   let activeIndex = -1;
   let previouslyFocused = null;
-
-  const focusableControls = [prevButton, closeButton, nextButton];
+  let currentShareUrl = '';
+  let focusableControls = [];
+  let touchStartX = null;
+  let touchStartY = null;
 
   const updateLightbox = () => {
     if (!activeItems.length || activeIndex < 0) return;
@@ -107,6 +118,10 @@ function createLightbox(loadImage) {
     lightboxImage.src = activeSrc;
     lightboxImage.alt = target.alt || 'Expanded gallery item';
     lightboxCaption.textContent = target.getAttribute('data-caption') || target.alt || '';
+    if (counter) {
+      counter.textContent = `${activeIndex + 1} / ${activeItems.length}`;
+    }
+    currentShareUrl = `${window.location.href.split('#')[0]}#slide-${activeIndex + 1}`;
   };
 
   const close = () => {
@@ -181,12 +196,65 @@ function createLightbox(loadImage) {
   prevButton.addEventListener('click', () => navigate(-1));
   nextButton.addEventListener('click', () => navigate(1));
 
+  const handleShare = async (button) => {
+    if (!button) return;
+    const action = button.getAttribute('data-share');
+    const shareUrl = currentShareUrl || window.location.href;
+
+    if (action === 'copy' && navigator.clipboard && navigator.clipboard.writeText) {
+      try {
+        await navigator.clipboard.writeText(shareUrl);
+        button.setAttribute('data-share-state', 'copied');
+      } catch (error) {
+        console.warn('Copy failed', error);
+      }
+      return;
+    }
+
+    if (action === 'share' && navigator.share) {
+      try {
+        await navigator.share({ url: shareUrl, title: document.title });
+      } catch (error) {
+        console.warn('Share cancelled or failed', error);
+      }
+      return;
+    }
+
+    // Fallback: open share URL in a new tab as a stub interaction.
+    window.open(shareUrl, '_blank', 'noopener');
+  };
+
+  shareButtons.forEach((button) => {
+    button.addEventListener('click', () => handleShare(button));
+  });
+
+  template.addEventListener('touchstart', (event) => {
+    if (!event.touches || event.touches.length !== 1) return;
+    touchStartX = event.touches[0].clientX;
+    touchStartY = event.touches[0].clientY;
+  });
+
+  template.addEventListener('touchend', (event) => {
+    if (touchStartX === null || touchStartY === null) return;
+    const touch = event.changedTouches && event.changedTouches[0];
+    if (!touch) return;
+    const deltaX = touch.clientX - touchStartX;
+    const deltaY = touch.clientY - touchStartY;
+    touchStartX = null;
+    touchStartY = null;
+
+    if (Math.abs(deltaX) < 40 || Math.abs(deltaX) < Math.abs(deltaY)) return;
+    navigate(deltaX > 0 ? -1 : 1);
+  });
+
   const open = ({ trigger, items, index }) => {
     if (!items || !items.length) return;
 
     activeItems = items;
     activeIndex = Number.isInteger(index) ? index : 0;
     previouslyFocused = trigger || document.activeElement;
+    focusableControls = [prevButton, ...shareButtons, closeButton, nextButton];
+    shareButtons.forEach((button) => button.removeAttribute('data-share-state'));
 
     updateLightbox();
 

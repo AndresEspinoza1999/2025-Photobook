@@ -86,6 +86,13 @@ body.page-month {
   gap: 1rem;
 }
 
+.site-header__timeline {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  justify-content: center;
+}
+
 .site-header__link {
   font-size: 0.95rem;
   font-weight: 500;
@@ -327,6 +334,12 @@ a:focus-visible {
   display: grid;
   gap: 0.75rem;
   box-shadow: var(--shadow-lg);
+}
+
+.filter-chips {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }
 
 .month-overview__list {
