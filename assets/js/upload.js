@@ -1,5 +1,5 @@
 (function () {
-  const ready = (fn) => {
+  const onReady = (fn) => {
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', fn, { once: true });
     } else {
@@ -19,47 +19,59 @@
     return `${size.toFixed(unitIndex === 0 ? 0 : 1)} ${units[unitIndex]}`;
   };
 
-  ready(() => {
+  const getMetaContent = (name) => {
+    const meta = document.querySelector(`meta[name="${name}"]`);
+    return meta && typeof meta.content === 'string' ? meta.content.trim() : '';
+  };
+
+  onReady(() => {
     const form = document.querySelector('.upload-form');
     if (!form) return;
 
-    const endpointMeta = document.querySelector('meta[name="sc9-upload-endpoint"]');
-    const endpoint = (endpointMeta && endpointMeta.content ? endpointMeta.content.trim() : '') ||
-      form.getAttribute('data-upload-endpoint') ||
-      '';
     const monthSelect = form.querySelector('select[name="month"]');
     const fileInput = form.querySelector('input[type="file"][name="files"]');
     const statusEl = form.querySelector('[data-upload-status]');
     const listEl = form.querySelector('[data-upload-file-list]');
     const submitButton = form.querySelector('button[type="submit"]');
 
-    if (!endpoint) {
-      if (statusEl) {
-        statusEl.textContent =
-          'Upload endpoint is not configured. Add a <meta name="sc9-upload-endpoint"> tag to continue.';
-      }
-      return;
-    }
+    const endpoint =
+      getMetaContent('sc9-upload-endpoint') ||
+      form.getAttribute('data-upload-endpoint') ||
+      '';
+
+    const resolveAuthToken = () =>
+      getMetaContent('sc9-upload-token') ||
+      form.getAttribute('data-upload-token') ||
+      (typeof window !== 'undefined' && window.SC9_UPLOAD_TOKEN ? window.SC9_UPLOAD_TOKEN : '');
 
     const resetStatus = () => {
-      if (statusEl) {
-        statusEl.textContent = '';
-        statusEl.classList.remove('is-error', 'is-success');
-      }
+      if (!statusEl) return;
+      statusEl.textContent = '';
+      statusEl.classList.remove('is-error', 'is-success');
     };
 
-    const setStatus = (message, type = 'info') => {
+    const setStatus = (message, variant = 'info') => {
       if (!statusEl) return;
       statusEl.textContent = message;
       statusEl.classList.remove('is-error', 'is-success');
-      if (type === 'error') statusEl.classList.add('is-error');
-      if (type === 'success') statusEl.classList.add('is-success');
+      if (variant === 'error') statusEl.classList.add('is-error');
+      if (variant === 'success') statusEl.classList.add('is-success');
+    };
+
+    const toggleUploadingState = (isUploading) => {
+      if (isUploading) {
+        submitButton?.setAttribute('disabled', 'true');
+        form.classList.add('is-uploading');
+      } else {
+        submitButton?.removeAttribute('disabled');
+        form.classList.remove('is-uploading');
+      }
     };
 
     const renderFileList = () => {
-      if (!listEl) return;
+      if (!listEl || !fileInput) return;
       listEl.innerHTML = '';
-      const files = fileInput?.files ? Array.from(fileInput.files) : [];
+      const files = Array.from(fileInput.files || []);
       files.forEach((file) => {
         const item = document.createElement('li');
         item.className = 'upload-file';
@@ -76,157 +88,152 @@
       resetStatus();
     });
 
-    const resolveAuthToken = () => {
-      const meta = document.querySelector('meta[name="sc9-upload-token"]');
-      if (meta && meta.content) return meta.content.trim();
-      const datasetToken = form.getAttribute('data-upload-token');
-      if (datasetToken) return datasetToken;
-      if (typeof window !== 'undefined' && window.SC9_UPLOAD_TOKEN) {
-        return window.SC9_UPLOAD_TOKEN;
-      }
-      return '';
-    };
+    if (!endpoint) {
+      setStatus('Upload endpoint is not configured. Add the meta tag to continue.', 'error');
+      return;
+    }
 
-    const createPayload = (file) => ({
-      month: monthSelect?.value || '',
-      filename: file.name,
-      contentType: file.type || 'application/octet-stream',
-    });
-
-    const uploadViaPresignedPost = async ({ uploadUrl, fields }, file) => {
-      const formData = new FormData();
-      Object.entries(fields || {}).forEach(([key, value]) => {
-        formData.append(key, value);
-      });
-      formData.append('file', file);
-      const response = await fetch(uploadUrl, {
-        method: 'POST',
-        body: formData,
-      });
-      if (!response.ok) {
-        throw new Error(`Upload failed with status ${response.status}`);
-      }
-    };
-
-    const performUpload = async (file, index, total) => {
-      const payload = createPayload(file);
-      if (!payload.month) {
-        throw new Error('Choose a month before uploading.');
-      }
-
+    const requestPresign = async (month, file) => {
       const headers = { 'Content-Type': 'application/json' };
       const authToken = resolveAuthToken();
       if (authToken) {
         headers.Authorization = `Bearer ${authToken}`;
       }
 
+      const body = {
+        month,
+        filename: file.name,
+        contentType: file.type || 'application/octet-stream',
+      };
+
       const response = await fetch(endpoint, {
         method: 'POST',
         headers,
-        body: JSON.stringify(payload),
+        body: JSON.stringify(body),
       });
 
       if (!response.ok) {
-        const errorBody = await response.text();
-        throw new Error(`Failed to create upload link (${response.status}): ${errorBody}`);
+        const errorText = await response.text().catch(() => '');
+        throw new Error(
+          `Presign request failed (${response.status}). ${errorText || 'Check API Gateway logs for details.'}`
+        );
       }
 
       const result = await response.json();
-      const { uploadUrl, fields, fileUrl } = result;
-      if (!uploadUrl) {
-        throw new Error('Upload endpoint did not return an uploadUrl.');
+      const { uploadUrl, fields, fileUrl } = result || {};
+
+      if (!uploadUrl || !fields) {
+        throw new Error('Presign response missing uploadUrl or fields.');
       }
 
-      await uploadViaPresignedPost({ uploadUrl, fields: fields || {} }, file);
-
-      return {
-        fileUrl: fileUrl || result.publicUrl || null,
-        index,
-        total,
-      };
+      return { uploadUrl, fields, fileUrl, raw: result };
     };
 
-    const handleSubmit = async (event) => {
+    const uploadToS3 = async (uploadUrl, fields, file) => {
+      const formData = new FormData();
+      Object.entries(fields).forEach(([key, value]) => {
+        formData.append(key, value);
+      });
+      formData.append('file', file);
+
+      const response = await fetch(uploadUrl, {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text().catch(() => '');
+        throw new Error(`S3 upload failed (${response.status}). ${errorText || 'No response body returned.'}`);
+      }
+    };
+
+    const updateResultsList = (successes, failures) => {
+      if (!listEl) return;
+      listEl.innerHTML = '';
+
+      successes.forEach(({ file, fileUrl, position }) => {
+        const item = document.createElement('li');
+        item.className = 'upload-file upload-file--success';
+        const link = fileUrl
+          ? `<a href="${fileUrl}" target="_blank" rel="noopener">Open file</a>`
+          : '';
+        item.innerHTML = `
+          <span class="upload-file__name">${file.name}</span>
+          <span class="upload-file__meta">Uploaded (${position}) ${link}</span>
+        `;
+        listEl.appendChild(item);
+      });
+
+      failures.forEach(({ file, error }) => {
+        const item = document.createElement('li');
+        item.className = 'upload-file upload-file--error';
+        item.innerHTML = `
+          <span class="upload-file__name">${file.name}</span>
+          <span class="upload-file__meta">${error.message || 'Upload failed'}</span>
+        `;
+        listEl.appendChild(item);
+      });
+    };
+
+    const handleUpload = async (event) => {
       event.preventDefault();
       resetStatus();
 
-      if (!fileInput?.files || fileInput.files.length === 0) {
-        setStatus('Select at least one image to upload.', 'error');
+      if (!fileInput || !fileInput.files || fileInput.files.length === 0) {
+        setStatus('Select at least one photo to upload.', 'error');
         fileInput?.focus();
         return;
       }
 
-      if (!monthSelect?.value) {
-        setStatus('Choose a month so we know where to file these memories.', 'error');
+      if (!monthSelect || !monthSelect.value) {
+        setStatus('Choose a month so we know where to store these memories.', 'error');
         monthSelect?.focus();
         return;
       }
 
       const files = Array.from(fileInput.files).slice(0, 20);
-      setStatus(`Requesting upload link for ${files.length} file${files.length > 1 ? 's' : ''}…`);
-      submitButton?.setAttribute('disabled', 'true');
-      form.classList.add('is-uploading');
+      setStatus(`Preparing uploads for ${files.length} file${files.length === 1 ? '' : 's'}…`);
+      toggleUploadingState(true);
 
       const successes = [];
       const failures = [];
 
-      for (let i = 0; i < files.length; i += 1) {
-        const file = files[i];
+      for (let index = 0; index < files.length; index += 1) {
+        const file = files[index];
         try {
-          setStatus(`Uploading ${file.name} (${i + 1} of ${files.length})…`);
-          const result = await performUpload(file, i + 1, files.length);
-          successes.push({ file, result });
+          setStatus(`Uploading ${file.name} (${index + 1} of ${files.length})…`);
+          const presign = await requestPresign(monthSelect.value, file);
+          await uploadToS3(presign.uploadUrl, presign.fields, file);
+          if (presign.fileUrl) {
+            console.info('[Upload] File available at', presign.fileUrl);
+          }
+          successes.push({
+            file,
+            fileUrl: presign.fileUrl || null,
+            position: `${index + 1}/${files.length}`,
+          });
         } catch (error) {
-          console.error('[Upload] Failed to upload file', error);
-          failures.push({ file, error });
+          console.error('[Upload] Failed to process file', file.name, error);
+          failures.push({ file, error: error instanceof Error ? error : new Error(String(error)) });
         }
       }
 
-      form.classList.remove('is-uploading');
-      submitButton?.removeAttribute('disabled');
-
-      if (listEl) {
-        listEl.innerHTML = '';
-        if (successes.length) {
-          successes.forEach(({ file, result }) => {
-            const item = document.createElement('li');
-            item.className = 'upload-file upload-file--success';
-            const link = result.fileUrl
-              ? `<a href="${result.fileUrl}" target="_blank" rel="noopener">View uploaded file</a>`
-              : '';
-            item.innerHTML = `
-              <span class="upload-file__name">${file.name}</span>
-              <span class="upload-file__meta">Uploaded (${result.index}/${result.total}) ${link}</span>
-            `;
-            listEl.appendChild(item);
-          });
-        }
-        if (failures.length) {
-          failures.forEach(({ file, error }) => {
-            const item = document.createElement('li');
-            item.className = 'upload-file upload-file--error';
-            item.innerHTML = `
-              <span class="upload-file__name">${file.name}</span>
-              <span class="upload-file__meta">${(error && error.message) || 'Upload failed'}</span>
-            `;
-            listEl.appendChild(item);
-          });
-        }
-      }
+      toggleUploadingState(false);
+      updateResultsList(successes, failures);
 
       if (failures.length) {
-        const message = failures
-          .map(({ file, error }) => `${file.name}: ${(error && error.message) || 'Unknown error'}`)
+        const failureSummary = failures
+          .map(({ file, error }) => `${file.name}: ${error.message}`)
           .join('\n');
-        setStatus(`Some uploads failed:\n${message}`, 'error');
+        setStatus(`Some uploads failed.\n${failureSummary}`, 'error');
       } else {
-        setStatus(`Upload complete. ${successes.length} file${successes.length === 1 ? '' : 's'} ready for review.`, 'success');
+        setStatus('Upload complete. All files are ready for review.', 'success');
         form.reset();
         renderFileList();
       }
     };
 
-    form.addEventListener('submit', handleSubmit);
+    form.addEventListener('submit', handleUpload);
     renderFileList();
   });
 })();
