@@ -20,13 +20,14 @@
   };
 
   ready(() => {
-    const form = document.querySelector('.upload-form[data-upload-endpoint]');
+    const form = document.querySelector('.upload-form');
     if (!form) return;
 
-    const endpoint = form.getAttribute('data-upload-endpoint');
+    const endpointMeta = document.querySelector('meta[name="sc9-upload-endpoint"]');
+    const endpoint = (endpointMeta && endpointMeta.content ? endpointMeta.content.trim() : '') ||
+      form.getAttribute('data-upload-endpoint') ||
+      '';
     const monthSelect = form.querySelector('select[name="month"]');
-    const notesInput = form.querySelector('textarea[name="notes"]');
-    const photographerInput = form.querySelector('input[name="photographer"]');
     const fileInput = form.querySelector('input[type="file"][name="files"]');
     const statusEl = form.querySelector('[data-upload-status]');
     const listEl = form.querySelector('[data-upload-file-list]');
@@ -35,7 +36,7 @@
     if (!endpoint) {
       if (statusEl) {
         statusEl.textContent =
-          'Upload endpoint is not configured. Update data-upload-endpoint on the form to continue.';
+          'Upload endpoint is not configured. Add a <meta name="sc9-upload-endpoint"> tag to continue.';
       }
       return;
     }
@@ -76,25 +77,21 @@
     });
 
     const resolveAuthToken = () => {
+      const meta = document.querySelector('meta[name="sc9-upload-token"]');
+      if (meta && meta.content) return meta.content.trim();
       const datasetToken = form.getAttribute('data-upload-token');
       if (datasetToken) return datasetToken;
-      const meta = document.querySelector('meta[name="sc9-upload-token"]');
-      if (meta && meta.content) return meta.content;
       if (typeof window !== 'undefined' && window.SC9_UPLOAD_TOKEN) {
         return window.SC9_UPLOAD_TOKEN;
       }
       return '';
     };
 
-    const createPayload = (file) => {
-      return {
-        filename: file.name,
-        contentType: file.type || 'application/octet-stream',
-        month: monthSelect?.value || '',
-        notes: notesInput?.value || '',
-        photographer: photographerInput?.value || '',
-      };
-    };
+    const createPayload = (file) => ({
+      month: monthSelect?.value || '',
+      filename: file.name,
+      contentType: file.type || 'application/octet-stream',
+    });
 
     const uploadViaPresignedPost = async ({ uploadUrl, fields }, file) => {
       const formData = new FormData();
@@ -105,19 +102,6 @@
       const response = await fetch(uploadUrl, {
         method: 'POST',
         body: formData,
-      });
-      if (!response.ok) {
-        throw new Error(`Upload failed with status ${response.status}`);
-      }
-    };
-
-    const uploadViaPut = async ({ uploadUrl }, file) => {
-      const response = await fetch(uploadUrl, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': file.type || 'application/octet-stream',
-        },
-        body: file,
       });
       if (!response.ok) {
         throw new Error(`Upload failed with status ${response.status}`);
@@ -153,11 +137,7 @@
         throw new Error('Upload endpoint did not return an uploadUrl.');
       }
 
-      if (fields) {
-        await uploadViaPresignedPost({ uploadUrl, fields }, file);
-      } else {
-        await uploadViaPut({ uploadUrl }, file);
-      }
+      await uploadViaPresignedPost({ uploadUrl, fields: fields || {} }, file);
 
       return {
         fileUrl: fileUrl || result.publicUrl || null,
@@ -197,7 +177,7 @@
           const result = await performUpload(file, i + 1, files.length);
           successes.push({ file, result });
         } catch (error) {
-          console.error('Upload failed', error);
+          console.error('[Upload] Failed to upload file', error);
           failures.push({ file, error });
         }
       }
@@ -240,7 +220,7 @@
           .join('\n');
         setStatus(`Some uploads failed:\n${message}`, 'error');
       } else {
-        setStatus(`All uploads completed. ${successes.length} file${successes.length === 1 ? '' : 's'} ready for review.`, 'success');
+        setStatus(`Upload complete. ${successes.length} file${successes.length === 1 ? '' : 's'} ready for review.`, 'success');
         form.reset();
         renderFileList();
       }
