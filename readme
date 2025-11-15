@@ -26,6 +26,7 @@ operational checklist for maintaining the live experience.
 - Confirm **Settings → Pages** is set to deploy from the `main` branch and the `/` directory.
 - Verify the custom domain reads `sc9photobook2025.com` and HTTPS is enforced.
 - Ensure registrar DNS `A` records point to the four GitHub Pages IP addresses (`185.199.108.153` – `185.199.111.153`).
+- Review the [branch conventions](docs/workflows/git_branch_conventions.md) if additional branches were used so they can be merged or cleaned up after deployment.
 
 ## Routine Tasks Summary
 - **Monthly:** Refresh copy or imagery references, verify automated backups, and run link-check reports.
