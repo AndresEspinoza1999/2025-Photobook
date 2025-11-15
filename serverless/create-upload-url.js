@@ -9,7 +9,7 @@ const {
   BUCKET_NAME,
   PUBLIC_BASE_URL,
   ALLOWED_MONTHS = 'january,february,march,april,may,june,july,august,september,october,november,december',
-  MAX_FILE_BYTES = '26214400',
+  MAX_FILE_BYTES = '62914560',
   ALLOWED_ORIGINS = 'https://sc9photobook2025.com,https://sc9photobook2025.github.io,http://localhost:4000',
   AUTH_SHARED_SECRET,
 } = process.env;
@@ -21,7 +21,7 @@ const allowedMonths = new Set(
     .filter(Boolean)
 );
 const allowedOrigins = ALLOWED_ORIGINS.split(',').map((origin) => origin.trim());
-const maxFileBytes = Number.parseInt(MAX_FILE_BYTES, 10) || 26214400;
+const maxFileBytes = Number.parseInt(MAX_FILE_BYTES, 10) || 62914560;
 
 const baseCorsHeaders = {
   'Access-Control-Allow-Headers': 'Content-Type,Authorization',
