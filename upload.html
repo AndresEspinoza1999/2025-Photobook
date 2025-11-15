@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Upload Center · SC9 Photo Book 2025</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="page-upload fade-in">
+    <header class="site-header" role="banner">
+      <a class="site-header__brand" href="index.html">SC9 Photo Book</a>
+      <nav class="site-header__nav" aria-label="Global">
+        <a class="site-header__link" href="index.html">Home</a>
+        <a class="site-header__link" href="highlights.html">Highlights</a>
+        <a class="site-header__link" href="upload.html" aria-current="page">Upload</a>
+      </nav>
+      <nav class="site-header__timeline text-sm text-muted" aria-label="Year navigation">
+        <a href="months/january.html">Jan</a> →
+        <a href="months/february.html">Feb</a> →
+        <a href="months/march.html">Mar</a> →
+        <a href="months/april.html">Apr</a> →
+        <a href="months/may.html">May</a> →
+        <a href="months/june.html">Jun</a> →
+        <a href="months/july.html">Jul</a> →
+        <a href="months/august.html">Aug</a> →
+        <a href="months/september.html">Sep</a> →
+        <a href="months/october.html">Oct</a> →
+        <a href="months/november.html">Nov</a> →
+        <a href="months/december.html">Dec</a>
+      </nav>
+    </header>
+    <main class="upload-page" aria-labelledby="upload-title">
+      <header class="upload-header">
+        <span class="badge badge-pill">Contributor Hub</span>
+        <h1 id="upload-title">Upload photos &amp; videos to the 2025 photobook</h1>
+        <p class="text-base text-muted">
+          We are rebuilding the contributor pipeline on Firebase Storage. The form remains here for layout reference, but
+          uploads are paused until the new backend is ready.
+        </p>
+        <p class="text-sm text-muted">
+          Share new shots via the shared drive or message the #sc9-photos channel while we finish the migration. We will
+          announce when the Firebase uploader is live.
+        </p>
+      </header>
+
+      <section class="upload-layout" aria-label="Upload workflow">
+        <article class="upload-card" aria-labelledby="upload-form-title">
+          <h2 id="upload-form-title">Upload your images</h2>
+          <p class="text-sm text-muted">
+            The controls remain visible for continuity, but uploads are temporarily disabled while we wire up the Firebase
+            workflow.
+          </p>
+          <noscript>
+            <p class="upload-warning">JavaScript is required to upload files. Please enable JavaScript or share images via the shared drive.</p>
+          </noscript>
+          <form class="upload-form" novalidate>
+            <div class="form-row">
+              <label class="form-label" for="upload-month">Target month</label>
+              <select class="form-select" id="upload-month" name="month" required>
+                <option value="">Choose a month</option>
+                <option value="january">January</option>
+                <option value="february">February</option>
+                <option value="march">March</option>
+                <option value="april">April</option>
+                <option value="may">May</option>
+                <option value="june">June</option>
+                <option value="july">July</option>
+                <option value="august">August</option>
+                <option value="september">September</option>
+                <option value="october">October</option>
+                <option value="november">November</option>
+                <option value="december">December</option>
+              </select>
+            </div>
+            <div class="form-row">
+              <label class="form-label" for="upload-photographer">Photographer (optional)</label>
+              <input class="form-input" type="text" id="upload-photographer" name="photographer" placeholder="Who shot these?" />
+            </div>
+            <div class="form-row">
+              <label class="form-label" for="upload-caption">Story or caption notes</label>
+              <textarea
+                class="form-textarea"
+                id="upload-caption"
+                name="notes"
+                rows="3"
+                placeholder="Add context we can use when curating captions."
+              ></textarea>
+            </div>
+            <div class="form-row">
+              <label class="form-label" for="upload-files">Select media</label>
+              <input
+                class="form-input"
+                type="file"
+                id="upload-files"
+                name="files"
+                accept=".jpeg,.jpg,.png,.heic,.webp,.mp4,.mov,.webm,image/jpeg,image/png,image/heic,image/heif,image/webp,video/mp4,video/quicktime,video/webm"
+                multiple
+                required
+              />
+              <p class="text-xs text-muted">
+                Up to 20 files per batch · JPEG, PNG, HEIC, WEBP, MP4, MOV, or WEBM · Max 100&nbsp;MB each (limits under review for Firebase)
+              </p>
+            </div>
+            <div class="form-row">
+              <button class="button button-primary" type="submit">Upload media</button>
+            </div>
+            <div class="upload-progress text-sm" data-upload-status aria-live="polite"></div>
+            <ul class="upload-file-list" data-upload-file-list></ul>
+          </form>
+        </article>
+
+        <aside class="upload-card upload-guidelines" aria-labelledby="upload-guidelines-title">
+          <h2 id="upload-guidelines-title">Guidelines &amp; storage plan</h2>
+          <ul class="upload-guidelines__list text-sm text-muted">
+            <li>The AWS-based uploader has been retired; Firebase Storage + Functions will replace it shortly.</li>
+            <li>Until the new workflow is live, drop assets in the shared drive so editors can continue updating the book.</li>
+            <li>Keep individual files under 100&nbsp;MB for fast sync and mobile-friendly galleries.</li>
+            <li>Need to send RAW footage or video? Use the archival drive and mention it in the comments with your submission.</li>
+            <li>Watch the <a href="docs/operations/media_upload_pipeline.md">upload runbook</a> for migration progress and rollout checklists.</li>
+            <li>Questions? Ping the #sc9-photos channel or note them in the ops doc.</li>
+          </ul>
+        </aside>
+      </section>
+    </main>
+    <footer class="site-footer text-muted text-sm">
+      <div>Built by the SC9 squad · Updated as 2025 unfolds · <a href="upload.html">Upload center</a></div>
+      <div class="text-sm text-muted" aria-label="Timeline">
+        <a href="months/january.html">Jan</a> → <a href="months/february.html">Feb</a> → <a href="months/march.html">Mar</a> →
+        <a href="months/april.html">Apr</a> → <a href="months/may.html">May</a> → <a href="months/june.html">Jun</a> →
+        <a href="months/july.html">Jul</a> → <a href="months/august.html">Aug</a> → <a href="months/september.html">Sep</a> →
+        <a href="months/october.html">Oct</a> → <a href="months/november.html">Nov</a> → <a href="months/december.html">Dec</a>
+      </div>
+    </footer>
+    <script src="script.js" defer></script>
+    <script src="assets/js/upload.js" defer></script>
+  </body>
+</html>
