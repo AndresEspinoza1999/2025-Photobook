@@ -47,7 +47,7 @@ Browser ──▶ API Gateway ──▶ Lambda (create upload URL) ──▶ S3 
 | `BUCKET_NAME` | Target S3 bucket. |
 | `PUBLIC_BASE_URL` | Optional CDN base (e.g., `https://media.sc9photobook2025.com`). Used to craft `fileUrl`. |
 | `ALLOWED_MONTHS` | Comma-separated list (`january,february,...`) to validate folder names. |
-| `MAX_FILE_BYTES` | Maximum accepted file size (e.g., `26214400` for 25 MB). |
+| `MAX_FILE_BYTES` | Maximum accepted file size (default `62914560` for 60 MB). |
 | `ALLOWED_ORIGINS` | Origins permitted in CORS responses. |
 | `AUTH_SHARED_SECRET` | Secret used to validate `Authorization: Bearer <token>` HMACs or other lightweight auth. |
 

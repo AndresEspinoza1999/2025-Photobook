@@ -95,7 +95,7 @@
             <div class="form-row">
               <label class="form-label" for="upload-files">Select photos</label>
               <input class="form-input" type="file" id="upload-files" name="files" accept="image/*" multiple required />
-              <p class="text-xs text-muted">Up to 20 images per batch · JPEG, PNG, HEIC, or WEBP</p>
+              <p class="text-xs text-muted">Up to 20 images per batch · JPEG, PNG, HEIC, or WEBP · Max 60&nbsp;MB each</p>
             </div>
             <div class="form-row">
               <button class="button button-primary" type="submit">Upload photos</button>
@@ -110,7 +110,7 @@
           <ul class="upload-guidelines__list text-sm text-muted">
             <li>Files are stored in our secure object bucket with month-based folders for quick publishing.</li>
             <li>Uploads expire after 15 minutes if not completed—refresh the page if a link times out.</li>
-            <li>Keep individual files under 25&nbsp;MB for fast sync and mobile-friendly galleries.</li>
+            <li>Keep individual files under 60&nbsp;MB for fast sync and mobile-friendly galleries.</li>
             <li>Need to send RAW footage or video? Drop it in the archival bucket instead and note it in the comments.</li>
             <li>Add auth tokens via <code>data-upload-token</code> on the form or a <code>&lt;meta name="sc9-upload-token"&gt;</code> tag if the API requires them.</li>
             <li>Questions? Ping the #sc9-photos channel or review the <a href="docs/operations/media_upload_pipeline.md">upload runbook</a>.</li>

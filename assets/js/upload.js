@@ -1,4 +1,5 @@
 (function () {
+  const MAX_FILE_BYTES = 62914560; // 60 MB
   const onReady = (fn) => {
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', fn, { once: true });
@@ -192,6 +193,13 @@
       }
 
       const files = Array.from(fileInput.files).slice(0, 20);
+
+      const tooLarge = files.find((file) => file.size > MAX_FILE_BYTES);
+      if (tooLarge) {
+        alert('File too large. Please upload photos/videos under 1 minute (max 60MB).');
+        setStatus(`${tooLarge.name} exceeds the 60MB upload limit.`, 'error');
+        return;
+      }
       setStatus(`Preparing uploads for ${files.length} file${files.length === 1 ? '' : 's'}…`);
       toggleUploadingState(true);
 
