@@ -69,3 +69,9 @@
 - Track infrastructure changes in the repository using pull requests.
 - Require approvals for modifications to DNS, deployment settings, or CDN rules.
 - Maintain a changelog of infrastructure updates for auditing purposes.
+
+## Media Upload Service
+- **Architecture:** GitHub Pages remains static while uploads flow through an AWS API Gateway + Lambda endpoint that creates pre-signed S3 URLs. See [`media_upload_pipeline.md`](media_upload_pipeline.md) for the full runbook.
+- **DNS & TLS:** Host the API at `api.sc9photobook2025.com` (or similar) with an ACM-managed certificate. Point the subdomain to the API Gateway custom domain using a `CNAME` record.
+- **Secrets:** Store the upload token (`AUTH_SHARED_SECRET`) and S3 bucket configuration in AWS Secrets Manager. Grant the Lambda execution role permission to read the secret and reference it via environment variables.
+- **Monitoring:** Alert on 4XX/5XX spikes, S3 throttle events, and object-level CloudTrail findings. Surface metrics to the same incident channel as the static site.
