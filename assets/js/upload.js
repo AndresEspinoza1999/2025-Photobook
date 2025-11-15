@@ -151,6 +151,8 @@
 
     const monthSelect = form.querySelector('select[name="month"]');
     const fileInput = form.querySelector('input[type="file"][name="files"]');
+    const photographerInput = form.querySelector('input[name="photographer"]');
+    const notesInput = form.querySelector('textarea[name="notes"]');
     const statusEl = form.querySelector('[data-upload-status]');
     const listEl = form.querySelector('[data-upload-file-list]');
     const submitButton = form.querySelector('button[type="submit"]');
@@ -263,7 +265,7 @@
       }
     };
 
-    const requestPresign = async (month, file, uploadToken) => {
+    const requestPresign = async (month, file, uploadToken, metadata = {}) => {
       const headers = { 'Content-Type': 'application/json' };
       const authToken = resolveAuthToken();
       if (authToken) {
@@ -275,6 +277,8 @@
         filename: file.name,
         contentType: file.type || 'application/octet-stream',
         uploadToken,
+        photographer: metadata.photographer || '',
+        notes: metadata.notes || '',
       };
 
       const response = await fetch(presignEndpoint, {
@@ -318,7 +322,7 @@
       }
     };
 
-    const confirmUpload = async ({ filename, key, contentType, size, month, uploadToken, fileUrl }) => {
+    const confirmUpload = async ({ filename, key, contentType, size, month, uploadToken, fileUrl, metadata = {} }) => {
       if (!confirmEndpoint) return;
       const headers = { 'Content-Type': 'application/json' };
       const authToken = resolveAuthToken();
@@ -334,6 +338,8 @@
         month,
         uploadToken,
         fileUrl,
+        photographer: metadata.photographer || '',
+        notes: metadata.notes || '',
       };
 
       const response = await fetch(confirmEndpoint, {
@@ -350,7 +356,7 @@
       }
     };
 
-    const uploadEntry = async (entry, month, { resetStatus = true } = {}) => {
+    const uploadEntry = async (entry, month, { resetStatus = true, metadata = {} } = {}) => {
       if (!entry || entry.isUploading) return false;
       if (resetStatus) {
         entry.retryButton.hidden = true;
@@ -375,7 +381,7 @@
       try {
         const uploadToken = createUploadToken();
         entry.uploadToken = uploadToken;
-        const presign = await requestPresign(month, entry.file, uploadToken);
+        const presign = await requestPresign(month, entry.file, uploadToken, metadata);
         markEntryStatus(entry, 'Uploading to storage…');
         await uploadToS3(presign.uploadUrl, presign.fields, entry.file);
 
@@ -389,6 +395,7 @@
           month,
           uploadToken,
           fileUrl: presign.fileUrl || '',
+          metadata,
         });
 
         attachPreview(entry);
@@ -429,6 +436,11 @@
         return;
       }
 
+      const metadata = {
+        photographer: photographerInput?.value.trim() || '',
+        notes: notesInput?.value.trim() || '',
+      };
+
       toggleUploadingState(true);
       setStatus('Starting uploads…');
 
@@ -438,7 +450,7 @@
       const entries = Array.from(fileEntries.values());
       for (const entry of entries) {
         if (entry.state === 'success') continue;
-        const ok = await uploadEntry(entry, monthSelect.value, { resetStatus: true });
+        const ok = await uploadEntry(entry, monthSelect.value, { resetStatus: true, metadata });
         if (ok) {
           successCount += 1;
         } else {
