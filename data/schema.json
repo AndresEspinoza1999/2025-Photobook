@@ -1,0 +1,206 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://2025-photobook.example/schema.json",
+  "title": "Photobook Collection",
+  "type": "object",
+  "required": ["events", "participants", "media"],
+  "properties": {
+    "participants": {
+      "type": "array",
+      "description": "People featured in the photobook.",
+      "items": {
+        "type": "object",
+        "required": ["id", "name"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]+$",
+            "description": "Stable slug identifier."
+          },
+          "name": {
+            "type": "string",
+            "description": "Display name."
+          },
+          "role": {
+            "type": "string",
+            "description": "Primary role or affiliation (e.g., photographer, speaker)."
+          },
+          "bio": {
+            "type": "string",
+            "description": "Short markdown-supported biography."
+          },
+          "links": {
+            "type": "array",
+            "description": "External links or social profiles.",
+            "items": {
+              "type": "object",
+              "required": ["type", "url"],
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "description": "Link category (website, instagram, etc.)."
+                },
+                "label": {
+                  "type": "string",
+                  "description": "Optional display text."
+                },
+                "url": {
+                  "type": "string",
+                  "format": "uri",
+                  "description": "Fully-qualified URL."
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "avatar": {
+            "type": "string",
+            "description": "Path or URL to participant avatar image."
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "media": {
+      "type": "array",
+      "description": "Photos, videos, or audio assets.",
+      "items": {
+        "type": "object",
+        "required": ["id", "type", "src", "title"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]+$",
+            "description": "Stable media slug."
+          },
+          "type": {
+            "type": "string",
+            "enum": ["image", "video", "audio"],
+            "description": "Media format."
+          },
+          "src": {
+            "type": "string",
+            "description": "Relative path or remote URL to the asset."
+          },
+          "alt": {
+            "type": "string",
+            "description": "Accessible alternative text."
+          },
+          "title": {
+            "type": "string",
+            "description": "Display title or caption headline."
+          },
+          "description": {
+            "type": "string",
+            "description": "Markdown-supported caption body."
+          },
+          "capturedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp the media was captured."
+          },
+          "credit": {
+            "type": "string",
+            "description": "Photographer or creator credit."
+          },
+          "participants": {
+            "type": "array",
+            "description": "Participant IDs appearing in the media.",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          },
+          "eventId": {
+            "type": "string",
+            "description": "Related event ID, if applicable."
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Searchable keywords."
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "events": {
+      "type": "array",
+      "description": "Event timeline for the photobook.",
+      "items": {
+        "type": "object",
+        "required": ["id", "title", "startDate"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]+$",
+            "description": "Stable event slug."
+          },
+          "title": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string",
+            "description": "Short markdown-supported description."
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "location": {
+            "type": "object",
+            "properties": {
+              "venue": { "type": "string" },
+              "city": { "type": "string" },
+              "country": { "type": "string" },
+              "coordinates": {
+                "type": "object",
+                "properties": {
+                  "lat": { "type": "number" },
+                  "lng": { "type": "number" }
+                },
+                "required": ["lat", "lng"],
+                "additionalProperties": false
+              }
+            },
+            "additionalProperties": false
+          },
+          "heroMediaId": {
+            "type": "string",
+            "description": "Primary media asset for the event."
+          },
+          "media": {
+            "type": "array",
+            "description": "Ordered list of media IDs showcased for this event.",
+            "items": {
+              "type": "string"
+            }
+          },
+          "participants": {
+            "type": "array",
+            "description": "Participant IDs associated with the event.",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          },
+          "themes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Conceptual tags to power filters."
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
