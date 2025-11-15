@@ -1,0 +1,21 @@
+service: sc9-photobook-2025
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: ${env:AWS_REGION, 'us-east-2'}
+  environment:
+    BUCKET_NAME: ${env:BUCKET_NAME}
+    PUBLIC_BASE_URL: ${env:PUBLIC_BASE_URL}
+    ALLOWED_MONTHS: ${env:ALLOWED_MONTHS, 'january,february,march,april,may,june,july,august,september,october,november,december'}
+    MAX_FILE_BYTES: '62914560'
+    ALLOWED_ORIGINS: ${env:ALLOWED_ORIGINS, 'https://sc9photobook2025.com,https://sc9photobook2025.github.io,http://localhost:4000'}
+    AUTH_SHARED_SECRET: ${env:AUTH_SHARED_SECRET}
+
+functions:
+  photobook-create-upload-url:
+    handler: create-upload-url.handler
+    events:
+      - httpApi:
+          path: /uploads/presign
+          method: post
