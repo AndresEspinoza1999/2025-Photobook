@@ -7,17 +7,16 @@ operational checklist for maintaining the live experience.
 ## Site Structure
 - [`index.html`](index.html): Dark-themed landing hub with latest updates, theme filters, and navigation into each month.
 - [`highlights.html`](highlights.html): Living recap page with award callouts, browsing tips, and cross-links to standout months.
-- [`upload.html`](upload.html): Contributor portal that issues secure upload links so teammates can drop new images into storage.
+- [`upload.html`](upload.html): Contributor portal currently paused while we rebuild the upload workflow on Firebase.
 - [`months/`](months/): Individual monthly chapters with narratives, playlists, and masonry galleries wired into the lightbox.
 - [`style.css`](style.css): Global design system, layout primitives, utility classes, and upload form styling.
 - [`script.js`](script.js): Handles the page fade-in animation and logs the load event.
 - [`assets/js/gallery.js`](assets/js/gallery.js): Lazy-loading, lightbox navigation, share controls, and accessibility helpers for the galleries.
-- [`assets/js/upload.js`](assets/js/upload.js): Front-end uploader that requests pre-signed links and streams files to the object store.
+- [`assets/js/upload.js`](assets/js/upload.js): Placeholder script that keeps the upload form disabled until the Firebase workflow ships.
 - [`assets/css/gallery.css`](assets/css/gallery.css): Masonry layout rules for the monthly galleries.
 - [`CNAME`](CNAME): Custom-domain binding for GitHub Pages.
 - [`docs/operations/web_infrastructure_plan.md`](docs/operations/web_infrastructure_plan.md): Domain registration, hosting pipeline configuration, HTTPS/CDN setup, and ongoing maintenance routines.
-- [`docs/operations/media_upload_pipeline.md`](docs/operations/media_upload_pipeline.md): Backend architecture and runbook for the photo-upload API and storage buckets.
-- [`serverless/create-upload-url.js`](serverless/create-upload-url.js): Example AWS Lambda handler that returns the pre-signed upload payload consumed by the upload form.
+- [`docs/operations/media_upload_pipeline.md`](docs/operations/media_upload_pipeline.md): Migration plan for the upcoming Firebase-based uploader.
 
 ## How to Preview Locally
 1. Install any static HTTP server (Python is preinstalled in most environments).
@@ -32,13 +31,9 @@ operational checklist for maintaining the live experience.
 - Populate the monthly galleries (`months/*.html`) with new `<figure>` blocks that point to assets inside `/assets/img/<month>/`.
 
 ## Media Upload Workflow (Quick Reference)
-1. Deploy the sample AWS Lambda (see `serverless/create-upload-url.js`) or equivalent serverless endpoint that returns pre-signed URLs pointing to your storage bucket.
-2. Update the `data-upload-endpoint` attribute in `upload.html` with the deployed API endpoint.
-3. Contributors visit `upload.html`, choose the target month, and select up to 20 images per batch.
-4. `assets/js/upload.js` requests pre-signed URLs, uploads the files directly to storage, and surfaces shareable links or errors in the UI.
-5. Editors confirm the uploads, move the files into the curated `/assets/img/<month>/` folders, and refresh captions before publishing.
-
-Refer to the upload runbook for secrets management, bucket policies, and troubleshooting guidance.
+The previous AWS/S3 uploader has been retired. Until the Firebase Storage + Functions flow ships, contributors should drop files
+in the shared drive and note the target month so editors can pull them into `/assets/img/<month>/`. Track the migration status in
+[`docs/operations/media_upload_pipeline.md`](docs/operations/media_upload_pipeline.md) and update this section once the new API is ready.
 ## GitHub Pages Deployment Checklist
 - Push changes to the `main` branch so GitHub Pages rebuilds automatically from the repository root.
 - Confirm **Settings → Pages** is set to deploy from the `main` branch and the `/` directory.

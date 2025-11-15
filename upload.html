@@ -3,12 +3,6 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta
-      name="sc9-upload-endpoint"
-      content="https://cx6vanb1qa.execute-api.us-east-2.amazonaws.com/uploads/presign"
-    />
-    <meta name="sc9-upload-confirm-endpoint" content="" />
-    <meta name="sc9-upload-token" content="SC9-UPLOAD-2025-THIS-IS-A-SHARED-SECRET-9fh38GHD84Jd001" />
     <title>Upload Center · SC9 Photo Book 2025</title>
     <link rel="stylesheet" href="style.css" />
   </head>
@@ -40,11 +34,12 @@
         <span class="badge badge-pill">Contributor Hub</span>
         <h1 id="upload-title">Upload photos &amp; videos to the 2025 photobook</h1>
         <p class="text-base text-muted">
-          Use this secure drop to send your best shots straight to the squad library. The form creates a
-          pre-signed upload link so files land in the right monthly folder with the right metadata.
+          We are rebuilding the contributor pipeline on Firebase Storage. The form remains here for layout reference, but
+          uploads are paused until the new backend is ready.
         </p>
         <p class="text-sm text-muted">
-          Tip: Batch uploads by month so the galleries stay organized. Captions can be updated later in the monthly pages or in the CMS.
+          Share new shots via the shared drive or message the #sc9-photos channel while we finish the migration. We will
+          announce when the Firebase uploader is live.
         </p>
       </header>
 
@@ -52,7 +47,8 @@
         <article class="upload-card" aria-labelledby="upload-form-title">
           <h2 id="upload-form-title">Upload your images</h2>
           <p class="text-sm text-muted">
-            Select a month, choose files, and we will generate secure upload URLs. You will see confirmation links when each image is stored.
+            The controls remain visible for continuity, but uploads are temporarily disabled while we wire up the Firebase
+            workflow.
           </p>
           <noscript>
             <p class="upload-warning">JavaScript is required to upload files. Please enable JavaScript or share images via the shared drive.</p>
@@ -102,7 +98,7 @@
                 required
               />
               <p class="text-xs text-muted">
-                Up to 20 files per batch · JPEG, PNG, HEIC, WEBP, MP4, MOV, or WEBM · Max 100&nbsp;MB each
+                Up to 20 files per batch · JPEG, PNG, HEIC, WEBP, MP4, MOV, or WEBM · Max 100&nbsp;MB each (limits under review for Firebase)
               </p>
             </div>
             <div class="form-row">
@@ -116,12 +112,12 @@
         <aside class="upload-card upload-guidelines" aria-labelledby="upload-guidelines-title">
           <h2 id="upload-guidelines-title">Guidelines &amp; storage plan</h2>
           <ul class="upload-guidelines__list text-sm text-muted">
-            <li>Files are stored in our secure object bucket with month-based folders for quick publishing.</li>
-            <li>Uploads expire after 15 minutes if not completed—refresh the page if a link times out.</li>
+            <li>The AWS-based uploader has been retired; Firebase Storage + Functions will replace it shortly.</li>
+            <li>Until the new workflow is live, drop assets in the shared drive so editors can continue updating the book.</li>
             <li>Keep individual files under 100&nbsp;MB for fast sync and mobile-friendly galleries.</li>
-            <li>Need to send RAW footage or video? Drop it in the archival bucket instead and note it in the comments.</li>
-            <li>Add auth tokens via <code>data-upload-token</code> on the form or a <code>&lt;meta name="sc9-upload-token"&gt;</code> tag if the API requires them.</li>
-            <li>Questions? Ping the #sc9-photos channel or review the <a href="docs/operations/media_upload_pipeline.md">upload runbook</a>.</li>
+            <li>Need to send RAW footage or video? Use the archival drive and mention it in the comments with your submission.</li>
+            <li>Watch the <a href="docs/operations/media_upload_pipeline.md">upload runbook</a> for migration progress and rollout checklists.</li>
+            <li>Questions? Ping the #sc9-photos channel or note them in the ops doc.</li>
           </ul>
         </aside>
       </section>
