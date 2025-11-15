@@ -1,1 +1,50 @@
-Read me 
+# 2025 Photobook Infrastructure Overview
+
+This repository hosts the static site that GitHub Pages publishes to
+[`https://sc9photobook2025.com/`](https://sc9photobook2025.com/). It also keeps the
+operational checklist for maintaining the live experience.
+
+## Site Structure
+- [`index.html`](index.html): Dark-themed landing hub with latest updates, theme filters, and navigation into each month.
+- [`highlights.html`](highlights.html): Living recap page with award callouts, browsing tips, and cross-links to standout months.
+- [`upload.html`](upload.html): Contributor portal currently paused while we rebuild the upload workflow on Firebase.
+- [`months/`](months/): Individual monthly chapters with narratives, playlists, and masonry galleries wired into the lightbox.
+- [`style.css`](style.css): Global design system, layout primitives, utility classes, and upload form styling.
+- [`script.js`](script.js): Handles the page fade-in animation and logs the load event.
+- [`assets/js/gallery.js`](assets/js/gallery.js): Lazy-loading, lightbox navigation, share controls, and accessibility helpers for the galleries.
+- [`assets/js/upload.js`](assets/js/upload.js): Front-end uploader scaffolding with validation, previews, and placeholders for the future Firebase endpoints.
+- [`assets/css/gallery.css`](assets/css/gallery.css): Masonry layout rules for the monthly galleries.
+- [`CNAME`](CNAME): Custom-domain binding for GitHub Pages.
+- [`docs/operations/web_infrastructure_plan.md`](docs/operations/web_infrastructure_plan.md): Domain registration, hosting pipeline configuration, HTTPS/CDN setup, and ongoing maintenance routines.
+- [`docs/operations/media_upload_pipeline.md`](docs/operations/media_upload_pipeline.md): Migration plan for the upcoming Firebase-based uploader.
+- [`firebase.json`](firebase.json) & [`firestore.rules`](firestore.rules): Baseline Firebase Hosting and Firestore configuration ready for `firebase init`.
+- [`functions/`](functions/): Placeholder Firebase Functions project with stubbed `generateUploadUrl` and `confirmUpload` handlers.
+
+## How to Preview Locally
+1. Install any static HTTP server (Python is preinstalled in most environments).
+2. From the repository root, run `python -m http.server 4000`.
+3. Open [http://localhost:4000](http://localhost:4000) in a browser to preview `index.html`, `highlights.html`, and the new `upload.html` workflow.
+
+## Editing the Experience
+- Update the headline or tagline in `index.html` to reflect the latest story for the photobook.
+- Evolve the Highlights nominations or browsing tips in `highlights.html` as new milestones ship.
+- Tweak colours, spacing, or hover treatments in `style.css` to match evolving art direction.
+- Extend `script.js` or the page-specific scripts if you need additional lightweight interactions.
+- Populate the monthly galleries (`months/*.html`) with new `<figure>` blocks that point to assets inside `/assets/img/<month>/`.
+
+## Media Upload Workflow (Quick Reference)
+The legacy uploader has been retired. Until the Firebase Storage + Functions flow ships, contributors should drop files
+in the shared drive and note the target month so editors can pull them into `/assets/img/<month>/`. Track the migration status in
+[`docs/operations/media_upload_pipeline.md`](docs/operations/media_upload_pipeline.md) and update this section once the new API is ready. When Firebase Functions are live, point `upload.html` at the callable endpoints documented there and re-enable the client-side uploader.
+## GitHub Pages Deployment Checklist
+- Push changes to the `main` branch so GitHub Pages rebuilds automatically from the repository root.
+- Confirm **Settings → Pages** is set to deploy from the `main` branch and the `/` directory.
+- Verify the custom domain reads `sc9photobook2025.com` and HTTPS is enforced.
+- Ensure registrar DNS `A` records point to the four GitHub Pages IP addresses (`185.199.108.153` – `185.199.111.153`).
+- Review the [branch conventions](docs/workflows/git_branch_conventions.md) if additional branches were used so they can be merged or cleaned up after deployment.
+
+## Routine Tasks Summary
+- **Monthly:** Refresh copy or imagery references, verify automated backups, and run link-check reports.
+- **Annually:** Review hosting/CDN costs and confirm domain renewal and billing details.
+
+Refer to the detailed plan for step-by-step guidance and escalation procedures.
